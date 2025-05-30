@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>I Found - Register</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
@@ -38,7 +39,8 @@
                 <div class="w-full max-w-[400px] min-h-[440px] bg-white border border-[#A4A4A4] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 flex flex-col">
                     <h2 class="text-2xl font-semibold text-slate-800 mb-8 text-left">Login</h2>
 
-                    <form action="#" method="POST" class="flex flex-col flex-grow space-y-5">
+                    <form action="{{ route('login') }}" method="POST" class="flex flex-col flex-grow space-y-5">
+                        @csrf
                         <!-- Email Field -->
                         <div>
                             <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
