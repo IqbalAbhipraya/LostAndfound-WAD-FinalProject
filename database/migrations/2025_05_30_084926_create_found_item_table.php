@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('found_date');
             $table->string('location');
             $table->string('image');
+            $table->string('founderid');
             $table->string('founder_name');
             $table->string('founder_contact');
             $table->enum('claim_status', ['unclaimed', 'claimed'])->default('unclaimed');
