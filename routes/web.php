@@ -21,7 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/founditems', [FoundItemController::class, 'index'])->name('found.index');
     Route::get('/founditems/details/{id}', [FoundItemController::class, 'show'])->name('found.show');
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
-
+    Route::get('/founditems/create', [FoundItemController::class, 'create'])->name('found.create');
+    Route::post('/founditems', [FoundItemController::class, 'store'])->name('found.store');
 });
 
 
