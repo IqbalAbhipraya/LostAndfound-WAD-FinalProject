@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\FoundItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class FoundItemController extends Controller
 {
@@ -32,22 +34,32 @@ class FoundItemController extends Controller
         $request->validate([
             'itemname' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'found_date' => 'required|date',
             'location' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'founder_name' => 'required|string|max:255',
             'founder_contact' => 'required|string|max:255',
         ]);
 
-        $foundItem = FoundItem::create($request->all());
+        $foundData = $request->only([
+            'itemname',
+            'description',
+            'image',
+            'location',
+            'founder_name',
+            'founder_contact'
+        ]);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('found_items', 'public');
-            $foundItem['image'] = $imagePath;
-            $foundItem->save();
+            $foundData['image'] = $imagePath;
         }
 
-        return redirect()->route('founditems.index')->with('success', 'Found item created successfully.');
+        $founderId = Auth::id();
+        $foundData['founderid'] = $founderId;
+
+        auth()->user()->foundItems()->create($foundData);
+
+        return redirect()->route('found.index');
     }
 
     /**
@@ -56,7 +68,7 @@ class FoundItemController extends Controller
     public function show(string $id)
     {
         $foundItem = FoundItem::findOrFail($id);
-        return view('FoundPage.founditems', compact('foundItem'));
+        return view('FoundPage.founddetails', compact('foundItem'));
     }
 
     /**
@@ -84,15 +96,24 @@ class FoundItemController extends Controller
         ]);
 
         $foundItem = FoundItem::findOrFail($id);
-        $foundItem->update($request->all());
 
+        $imagePath = $foundItem->image; // Keep existing image by default
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('found_items', 'public');
-            $foundItem->image = $imagePath;
-            $foundItem->save();
         }
 
-        return redirect()->route('FoundPage.founditems')->with('success', 'Found item updated successfully.');
+
+        $foundItem->update([
+            'itemname' => $request->itemname,
+            'description' => $request->description,
+            'found_date' => $request->found_date,
+            'location' => $request->location,
+            'image' => $imagePath,
+            'founder_name' => $request->founder_name,
+            'founder_contact' => $request->founder_contact,
+        ]);
+
+        return redirect()->route('founditems.index')->with('success', 'Found item updated successfully.');
     }
 
 
@@ -101,7 +122,7 @@ class FoundItemController extends Controller
         $foundItem = FoundItem::findOrFail($id);
         $foundItem->delete();
 
-        return redirect()->route('FoundPage.founditems')->with('success', 'Found item deleted successfully.');
-
+        return redirect()->route('founditems.index')->with('success', 'Found item deleted successfully.');
     }
+
 }

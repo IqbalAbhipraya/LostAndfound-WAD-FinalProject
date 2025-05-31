@@ -12,22 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comment_table', function (Blueprint $table) {
-            $table->id(); 
-            // foreign key ke tabel users (untuk siapa yang membuat komentar)
-            $table->unsignedBigInteger('commenter_id');
-            $table->foreign('commenter_id')->references('id')->on('users')->onDelete('cascade');
-
-            // foreign key ke tabel lost_items (jika komentar untuk barang hilang)
-            $table->unsignedBigInteger('lost_items_id')->nullable();
-            $table->foreign('lost_items_id')->references('id')->on('lost_items')->onDelete('cascade');
-
-            // foreign key ke tabel found_items (jika komentar untuk barang ditemukan)
-            $table->unsignedBigInteger('found_items_id')->nullable();
-            $table->foreign('found_items_id')->references('id')->on('found_items')->onDelete('cascade');
-
+            $table->id();
+            $table->foreignId('commenter_id')->nullable()->index();
+            $table->foreignId('lost_items_id')->nullable()->index();
+            $table->foreignId('found_items_id')->nullable()->index();
             $table->text('comments');
-
-            $table->timestamps(); 
+            $table->timestamps();
 
         });
     }
