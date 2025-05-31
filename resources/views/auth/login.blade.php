@@ -20,7 +20,7 @@
             }
         </script>
     </head>
-    <body class="font-sans min-h-screen bg-gradient-to-r from-[#E9E9FF] to-[#EDFFBB] text-slate-800">
+    <body class="font-sans min-h-screen bg-gradient-to-b from-red-200 to-zinc-300 text-slate-800">
         <!-- Header -->
         <header class="flex w-full h-[68px] px-6 py-3 items-center justify-between border-b border-[#A4A4A4] bg-white/50 backdrop-blur-[2px] sticky top-0 z-30">
             <a href="/" class="flex items-center text-xl font-bold text-slate-700">
@@ -30,7 +30,7 @@
 
         <!-- Main Container -->
         <div class="flex justify-center items-center min-h-[calc(100vh-68px)] p-6 lg:p-10">
-            <div class="flex flex-col lg:flex-row gap-8 items-center max-w-6xl w-full">
+            <div class="flex flex-col lg:flex-row gap-8 items-center justify-center max-w-6xl w-full">
 
                 <!-- Registration Form -->
                 <div class="w-full max-w-[400px] min-h-[440px] bg-white border border-[#A4A4A4] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 flex flex-col">
@@ -104,8 +104,8 @@
                     >
                     <div class="absolute inset-0 bg-black/60"></div>
                     <div class="relative z-10 text-white p-8 lg:p-12">
-                        <h1 class="text-2xl lg:text-3xl font-bold mb-4 leading-tight">Welcome to Our Lost and Found Website!</h1>
-                        </p>
+                        <h1 class="text-2xl lg:text-3xl font-bold mb-4 leading-tight">Welcome to findr.</h1>
+                        <p>A Centralized Lost and Found Website</p>
                     </div>
                 </div>
             </div>
