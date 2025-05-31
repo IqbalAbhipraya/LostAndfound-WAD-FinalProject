@@ -4,12 +4,12 @@
 <div class="max-w-4xl mx-auto p-6">
     <!-- Back Button -->
     <div class="mb-6">
-        <a href="{{ route('found.index') }}"
+        <a href="{{ route('lost-items.index') }}"
            class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors duration-300">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
-            Back to Found Items
+            Back to Lost Items
         </a>
     </div>
 
@@ -19,13 +19,13 @@
         <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">{{ $foundItem->itemname }}</h1>
-                    <p class="text-green-100 text-lg">Found at {{ $foundItem->location }}</p>
+                    <h1 class="text-3xl font-bold mb-2">{{ $lostItem->itemname }}</h1>
+                    <p class="text-green-100 text-lg">Lost at {{ $lostItem->location }}</p>
                 </div>
                 <div class="text-right">
                     <div class="bg-white bg-opacity-20 rounded-full px-4 py-2">
-                        <p class="text-sm font-medium">Found Date</p>
-                        <p class="text-lg font-bold">{{ \Carbon\Carbon::parse($foundItem->found_date)->format('M d, Y') }}</p>
+                        <p class="text-sm font-medium">Lost Date</p>
+                        <p class="text-lg font-bold">{{ \Carbon\Carbon::parse($lostItem->lost_date)->format('M d, Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -36,9 +36,9 @@
             <div class="space-y-4">
                 <h2 class="text-xl font-semibold text-gray-800">Item Photo</h2>
                 <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden shadow-lg">
-                    @if($foundItem->image)
-                        <img src="{{ asset('/storage/' . $foundItem->image) }}"
-                             alt="{{ $foundItem->itemname }}"
+                    @if($lostItem->image)
+                        <img src="{{ asset('/storage/' . $lostItem->image) }}"
+                             alt="{{ $lostItem->itemname }}"
                              class="w-full h-full object-cover">
                     @else
                         <div class="w-full h-full flex items-center justify-center">
@@ -60,59 +60,59 @@
                     <h2 class="text-xl font-semibold text-gray-800 mb-3">Description</h2>
                     <div class="bg-gray-50 rounded-lg p-4">
                         <p class="text-gray-700 leading-relaxed">
-                            {{ $foundItem->description ?? 'No description provided for this item.' }}
+                            {{ $lostItem->description ?? 'No description provided for this item.' }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Location Details -->
                 <div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-3">Location Found</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-3">Location Lost</h2>
                     <div class="flex items-center gap-3 bg-blue-50 rounded-lg p-4">
                         <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                         <div>
-                            <p class="font-medium text-gray-800">{{ $foundItem->location }}</p>
-                            <p class="text-sm text-gray-600">Item was found at this location</p>
+                            <p class="font-medium text-gray-800">{{ $lostItem->location }}</p>
+                            <p class="text-sm text-gray-600">Item was lost at this location</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Finder Information -->
+                <!-- Owner Information -->
                 <div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-3">Found By</h2>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-3">Reported By</h2>
                     <div class="bg-purple-50 rounded-lg p-4">
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                {{ strtoupper(substr($foundItem->founder_name, 0, 1)) }}
+                                {{ strtoupper(substr($lostItem->lost_name, 0, 1)) }}
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 text-lg">{{ $foundItem->founder_name }}</h3>
-                                <p class="text-gray-600">Item Finder</p>
+                                <h3 class="font-semibold text-gray-800 text-lg">{{ $lostItem->lost_name }}</h3>
+                                <p class="text-gray-600">Item Owner</p>
                             </div>
                         </div>
 
                         <!-- Contact Information -->
                         <div class="border-t border-purple-200 pt-3">
                             <p class="text-sm text-gray-600 mb-2">Contact Information:</p>
-                            <p class="font-medium text-purple-700">{{ $foundItem->founder_contact }}</p>
+                            <p class="font-medium text-purple-700">{{ $lostItem->lost_contact }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                    <button onclick="showContact('{{ $foundItem->founder_contact }}')"
+                    <button onclick="showContact('{{ $lostItem->lost_contact }}')"
                             class="flex-1 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                         </svg>
-                        Contact Finder
+                        Contact Owner
                     </button>
 
-                    <button onclick="copyContactInfo('{{ $foundItem->founder_contact }}')"
+                    <button onclick="copyContactInfo('{{ $lostItem->lost_contact }}')"
                             class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -128,10 +128,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <div>
-                            <h4 class="font-medium text-yellow-800 mb-1">Lost Something?</h4>
+                            <h4 class="font-medium text-yellow-800 mb-1">Found This Item?</h4>
                             <p class="text-yellow-700 text-sm">
-                                If this is your item, please contact the finder using the information above.
-                                Be prepared to provide proof of ownership.
+                                If you found this item, please contact the owner using the information above.
+                                Be prepared to provide details about where and when you found it.
                             </p>
                         </div>
                     </div>
@@ -149,8 +149,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Contact Finder</h3>
-                <p class="text-gray-600 mb-4">Reach out to claim your item</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Contact Owner</h3>
+                <p class="text-gray-600 mb-4">Reach out to help return this item</p>
             </div>
 
             <div class="bg-gray-50 rounded-lg p-4 mb-6">
@@ -159,7 +159,7 @@
             </div>
 
             <div class="flex gap-3">
-                <button onclick="copyContactInfo('{{ $foundItem->founder_contact }}')"
+                <button onclick="copyContactInfo('{{ $lostItem->lost_contact }}')"
                         class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300">
                     Copy
                 </button>

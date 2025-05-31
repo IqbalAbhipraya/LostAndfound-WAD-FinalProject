@@ -1,8 +1,9 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="max-w-6xl mx-auto p-6">
         <!-- Page Title -->
-        <h1 class="text-4xl font-bold text-green-800 text-center mb-8">Found Items</h1>
+        <h1 class="text-4xl font-bold text-green-800 text-center mb-8">Lost Items</h1>
 
         <!-- Search and Report Section -->
         <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-10">
@@ -21,7 +22,7 @@
             </div>
 
             <!-- Report Button -->
-            <a href="{{ route('found.create') }}">
+            <a href="{{ route('lost-items.create') }}">
             <button  class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center gap-2">
                 Report
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,18 +34,18 @@
 
         <!-- Items Grid -->
         <div id="itemsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            @forelse($foundItems as $item)
+            @forelse($lostItems as $item)
             <!-- Item Card -->
             <div class="item-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
                 <!-- Card Header -->
                 <div class="bg-gray-50 p-4 border-b border-gray-100">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                            {{ strtoupper(substr($item->founder_name, 0, 1)) }}
+                            {{ strtoupper(substr($item->lost_name, 0, 1)) }}
                         </div>
                         <div>
-                            <h3 class="font-semibold text-gray-800">{{ $item->founder_name }}</h3>
-                            <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($item->found_date)->format('M d, Y') }}</p>
+                            <h3 class="font-semibold text-gray-800">{{ $item->lost_name }}</h3>
+                            <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($item->lost_date)->format('M d, Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -76,12 +77,12 @@
                     </p>
                     <div class="flex items-center justify-between">
                         <button class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300"
-                                onclick="showContact('{{ $item->founder_contact }}')">
+                                onclick="showContact('{{ $item->lost_contact }}')">
                             Contact
                         </button>
-                        <a href="{{ route('found.show', $item->id) }}"
+                        <a href="{{ route('lost-items.edit', $item->id) }}"
                            class="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                            View Details
+                            Edit
                         </a>
                     </div>
                 </div>
@@ -94,11 +95,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No found items yet</h3>
-                <p class="text-gray-500 mb-4">Be the first to report a found item and help reunite it with its owner.</p>
-                <a href="#hi"
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No lost items yet</h3>
+                <p class="text-gray-500 mb-4">Be the first to report a lost item and help reunite it with its owner.</p>
+                <a href="{{ route('lost-items.create') }}"
                    class="inline-flex items-center px-6 py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-300">
-                    Report Found Item
+                    Report Lost Item
                 </a>
             </div>
             @endforelse
@@ -122,7 +123,7 @@
         <div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
             <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4">
                 <h3 class="text-lg font-bold mb-4">Contact Information</h3>
-                <p class="text-gray-700 mb-4">You can contact the finder at:</p>
+                <p class="text-gray-700 mb-4">You can contact the owner at:</p>
                 <p id="contactInfo" class="font-semibold text-blue-600 mb-6"></p>
                 <button onclick="hideContact()"
                         class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-full transition-colors duration-300">
