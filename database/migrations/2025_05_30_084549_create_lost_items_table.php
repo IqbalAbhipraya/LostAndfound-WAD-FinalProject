@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('lost_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
+            $table->string('itemname');
+            $table->text('description')->nullable();
+            $table->date('lost_date');
             $table->string('location');
-            $table->date('date_lost');
+            $table->string('image');
+            $table->string('lostid');
+            $table->string('lost_name');
+            $table->string('lost_contact');
+            $table->enum('claim_status', ['unclaimed', 'claimed'])->default('unclaimed');
+            $table->timestamp('claimed_at')->nullable();
             $table->timestamps();
         });
     }
