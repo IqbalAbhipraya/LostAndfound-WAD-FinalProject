@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comment_table', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             // foreign key ke tabel users (untuk siapa yang membuat komentar)
             $table->unsignedBigInteger('commenter_id');
             $table->foreign('commenter_id')->references('id')->on('users')->onDelete('cascade');
