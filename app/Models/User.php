@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function foundItems()
+    {
+        return $this->hasMany(FoundItem::class, 'founderid');
+    }
 }

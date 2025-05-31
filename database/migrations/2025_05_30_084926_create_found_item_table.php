@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('itemname');
             $table->text('description')->nullable();
-            $table->date('found_date');
+            $table->date('found_date')->default(now());
             $table->string('location');
             $table->string('image');
             $table->foreignId('founderid');

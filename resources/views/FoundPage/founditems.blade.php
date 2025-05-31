@@ -21,12 +21,14 @@
             </div>
 
             <!-- Report Button -->
-            <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center gap-2">
+            <a href="{{ route('found.create') }}">
+            <button  class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center gap-2">
                 Report
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
             </button>
+            </a>
         </div>
 
         <!-- Items Grid -->
@@ -50,7 +52,7 @@
                 <!-- Item Image -->
                 <div class="h-44 bg-gray-200 flex items-center justify-center overflow-hidden">
                     @if($item->image)
-                        <img src="{{ asset('/' . $item->image) }}"
+                        <img src="{{ asset('/storage/' . $item->image) }}"
                              alt="{{ $item->itemname }}"
                              class="w-full h-full object-cover">
                     @else

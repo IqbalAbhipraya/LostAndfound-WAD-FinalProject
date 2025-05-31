@@ -14,7 +14,6 @@ class FoundItem extends Model
     protected $fillable = [
         'itemname',
         'description',
-        'found_date',
         'location',
         'image',
         'founderid',
@@ -24,8 +23,13 @@ class FoundItem extends Model
         'claimed_at'
     ];
 
-    protected $casts = [
-        'found_date'  => 'date',
-        'claimed_at'  => 'datetime',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'founderid');
+    }
+
+    // protected $casts = [
+    //     'found_date'  => 'date',
+    //     'claimed_at'  => 'datetime',
+    // ];
 }

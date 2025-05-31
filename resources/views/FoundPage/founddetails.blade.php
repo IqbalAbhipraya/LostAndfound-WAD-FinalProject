@@ -37,7 +37,7 @@
                 <h2 class="text-xl font-semibold text-gray-800">Item Photo</h2>
                 <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden shadow-lg">
                     @if($foundItem->image)
-                        <img src="{{ asset('/' . $foundItem->image) }}"
+                        <img src="{{ asset('/storage/' . $foundItem->image) }}"
                              alt="{{ $foundItem->itemname }}"
                              class="w-full h-full object-cover">
                     @else

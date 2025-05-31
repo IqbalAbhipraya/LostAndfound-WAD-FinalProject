@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\FoundItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class FoundItemController extends Controller
 {
@@ -32,19 +34,32 @@ class FoundItemController extends Controller
         $request->validate([
             'itemname' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'found_date' => 'required|date',
             'location' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'founder_name' => 'required|string|max:255',
             'founder_contact' => 'required|string|max:255',
         ]);
 
-        $imagePath = null;
+        $foundData = $request->only([
+            'itemname',
+            'description',
+            'image',
+            'location',
+            'founder_name',
+            'founder_contact'
+        ]);
+
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('found_items', 'public');
+            $foundData['image'] = $imagePath;
         }
 
-        return redirect()->route('founditems.index')->with('success', 'Found item created successfully.');
+        $founderId = Auth::id();
+        $foundData['founderid'] = $founderId;
+
+        auth()->user()->foundItems()->create($foundData);
+
+        return redirect()->route('found.index');
     }
 
     /**
