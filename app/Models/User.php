@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(FoundItem::class, 'founderid');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(FoundItem::class, 'id');
+    }
 }

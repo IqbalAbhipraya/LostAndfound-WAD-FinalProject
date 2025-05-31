@@ -4,25 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Untuk mendapatkan user yang sedang login
-use App\Models\LostItem; // Import model LostItem
-use App\Models\FoundItem; // Import model FoundItem
+use Illuminate\Support\Facades\Auth; 
+use App\Models\LostItem; 
+use App\Models\FoundItem; 
 
 class CommentController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
-            'comments' => 'required|string|max:1000', // Isi komentar
-            'item_id' => 'required|integer',           // ID dari item yang dikomentari
-            'item_type' => 'required|in:lost,found',   // Tipe item: 'lost' atau 'found'
+            'comments' => 'required|string|max:1000', 
+            'item_id' => 'required|integer',          
+            'item_type' => 'required|in:lost,found',  
         ]);
 
         $comment = new Comment();
-        $comment->commenter_id = Auth::id(); // User yang sedang login sebagai pengirim komentar
-        $comment->comments = $request->comments; // Isi komentar dari form
+        $comment->commenter_id = Auth::id(); 
+        $comment->comments = $request->comments; 
 
-        // Tentukan foreign key mana yang akan diisi berdasarkan item_type
         if ($request->item_type === 'lost') {
             if (!LostItem::find($request->item_id)) {
                 return back()->with('error', 'Lost item not found.')->withInput();
@@ -39,14 +38,12 @@ class CommentController extends Controller
             return back()->with('error', 'Invalid item type.')->withInput();
         }
 
-        // Simpan komentar ke database
         $comment->save();
 
-        // Redirect kembali ke halaman detail item yang relevan
         if ($request->item_type === 'lost') {
             return redirect()->route('lost-items.show', $request->item_id)->with('Success', 'Comment successfully added!');
-        } else { // item_type === 'found'
-            return redirect()->route('found-items.show', $request->item_id)->with('Success', 'Comment successfully added!');
+        } else { 
+            return redirect()->route('found.show', $request->item_id)->with('Success', 'Comment successfully added!');
         }
     }
 
@@ -75,7 +72,6 @@ class CommentController extends Controller
         $comment->comments = $request->comments; 
         $comment->save();
 
-        // Redirect kembali ke halaman detail item terkait
         if ($comment->lost_items_id) {
             return redirect()->route('lost-items.show', $comment->lost_items_id)->with('Success', 'Comment updated successfully!');
         } elseif ($comment->found_items_id) {
@@ -92,18 +88,16 @@ class CommentController extends Controller
             abort(403, 'You do not have permission to delete this comment.');
         }
 
-        // Ambil ID item terkait sebelum dihapus untuk redirect
         $redirectItemId = $comment->lost_items_id ?? $comment->found_items_id;
         $redirectRouteName = '';
         if ($comment->lost_items_id) {
             $redirectRouteName = 'lost-items.show';
         } elseif ($comment->found_items_id) {
-            $redirectRouteName = 'found-items.show';
+            $redirectRouteName = 'found.show';
         }
 
         $comment->delete(); 
 
-        // Redirect kembali ke halaman detail item terkait
         if ($redirectRouteName && $redirectItemId) {
              return redirect()->route($redirectRouteName, $redirectItemId)->with('Success', 'Comment successfully deleted.');
         }

@@ -18,10 +18,10 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'commenter_id');
     }
 
-    public function lostItem()
-    {
-        return $this->belongsTo(LostItem::class, 'lost_items_id');
-    }
+    //public function lostItem()
+    // {
+    //     return $this->belongsTo(LostItem::class, 'lost_items_id');
+    // }
 
     public function foundItem()
     {
