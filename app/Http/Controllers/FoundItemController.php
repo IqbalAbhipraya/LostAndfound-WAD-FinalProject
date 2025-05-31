@@ -39,12 +39,9 @@ class FoundItemController extends Controller
             'founder_contact' => 'required|string|max:255',
         ]);
 
-        $foundItem = FoundItem::create($request->all());
-
+        $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('found_items', 'public');
-            $foundItem['image'] = $imagePath;
-            $foundItem->save();
         }
 
         return redirect()->route('founditems.index')->with('success', 'Found item created successfully.');
@@ -56,7 +53,7 @@ class FoundItemController extends Controller
     public function show(string $id)
     {
         $foundItem = FoundItem::findOrFail($id);
-        return view('FoundPage.founditems', compact('foundItem'));
+        return view('FoundPage.founddetails', compact('foundItem'));
     }
 
     /**
@@ -84,15 +81,24 @@ class FoundItemController extends Controller
         ]);
 
         $foundItem = FoundItem::findOrFail($id);
-        $foundItem->update($request->all());
 
+        $imagePath = $foundItem->image; // Keep existing image by default
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('found_items', 'public');
-            $foundItem->image = $imagePath;
-            $foundItem->save();
         }
 
-        return redirect()->route('FoundPage.founditems')->with('success', 'Found item updated successfully.');
+
+        $foundItem->update([
+            'itemname' => $request->itemname,
+            'description' => $request->description,
+            'found_date' => $request->found_date,
+            'location' => $request->location,
+            'image' => $imagePath,
+            'founder_name' => $request->founder_name,
+            'founder_contact' => $request->founder_contact,
+        ]);
+
+        return redirect()->route('founditems.index')->with('success', 'Found item updated successfully.');
     }
 
 
@@ -101,7 +107,7 @@ class FoundItemController extends Controller
         $foundItem = FoundItem::findOrFail($id);
         $foundItem->delete();
 
-        return redirect()->route('FoundPage.founditems')->with('success', 'Found item deleted successfully.');
-
+        return redirect()->route('founditems.index')->with('success', 'Found item deleted successfully.');
     }
+
 }
