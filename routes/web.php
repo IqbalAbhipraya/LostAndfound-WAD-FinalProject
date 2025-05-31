@@ -4,6 +4,7 @@ use App\Http\Controllers\LostItemController;
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnReportController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,7 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/lost-items/{id}/edit', [LostItemController::class, 'edit'])->name('lost-items.edit');
     Route::put('/lost-items/{id}', [LostItemController::class, 'update'])->name('lost-items.update');
     Route::delete('/lost-items/{id}', [LostItemController::class, 'destroy'])->name('lost-items.destroy');
-    
+
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 });
+
 
 require __DIR__.'/auth.php';
