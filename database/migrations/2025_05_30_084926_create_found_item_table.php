@@ -15,14 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('itemname');
             $table->text('description')->nullable();
-            $table->date('found_date');
+            $table->date('found_date')->default(now());
             $table->string('location');
             $table->string('image');
-            $table->id('founderid');
+            $table->foreignId('founderid');
             $table->string('founder_name');
             $table->string('founder_contact');
             $table->enum('claim_status', ['unclaimed', 'claimed'])->default('unclaimed');
-            $table->timestamp('claimed_at');
             $table->timestamps();
         });
     }

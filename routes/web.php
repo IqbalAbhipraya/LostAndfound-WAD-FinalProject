@@ -1,6 +1,8 @@
 <?php
 
+
 use App\Http\Controllers\LostItemController;
+
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnReportController;
@@ -26,10 +28,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
     // Found items resource routes (if you still need them)
     Route::resource('/founditems', FoundItemController::class);
 
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
+    Route::get('/founditems', [FoundItemController::class, 'index'])->name('found.index');
+    Route::get('/founditems/details/{id}', [FoundItemController::class, 'show'])->name('found.show');
+    Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
+    Route::get('/founditems/create', [FoundItemController::class, 'create'])->name('found.create');
+    Route::post('/founditems', [FoundItemController::class, 'store'])->name('found.store');
+
 });
 
 require __DIR__.'/auth.php';
