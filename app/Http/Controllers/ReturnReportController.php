@@ -10,8 +10,8 @@ class ReturnReportController extends Controller
 {
     //
     public function index() {
-        $articles = ReturnReport::latest()->get();
-        return view('admin.index', compact('articles'));
+        $reports = ReturnReport::latest()->get();
+        return view('returnReport.report-view', compact('reports'));
     }
 
     public function create() {
@@ -43,11 +43,17 @@ class ReturnReportController extends Controller
     }
 
     public function update(Request $request) {
-
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
     }
 
     public function destroy(ReturnReport $returnReport) {
-
+        $returnReport->delete();
+        session()->flash('success', 'Article successfully deleted!');
+        return redirect()->route('admin.index');
     }
 
     public function show($id) {

@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-sm border-b border-gray-200">
+<nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
@@ -22,6 +22,9 @@
                 </a>
                 <a href="#report-found" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Report Found
+                </a>
+                <a href="#report-found" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                    Return Report
                 </a>
                 <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Profile

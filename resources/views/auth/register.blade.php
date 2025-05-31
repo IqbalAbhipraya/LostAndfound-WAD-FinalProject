@@ -21,7 +21,7 @@
             }
         </script>
     </head>
-    <body class="font-sans min-h-screen bg-gradient-to-r from-[#E9E9FF] to-[#EDFFBB] text-slate-800">
+    <body class="font-sans min-h-screen bg-gradient-to-b from-red-200 to-zinc-300 text-slate-800">
         <!-- Header -->
         <header class="flex w-full h-[68px] px-6 py-3 items-center justify-between border-b border-[#A4A4A4] bg-white/50 backdrop-blur-[2px] sticky top-0 z-30">
             <a href="/" class="flex items-center text-xl font-bold text-slate-700">
@@ -31,108 +31,107 @@
 
         <!-- Main Container -->
         <div class="flex justify-center items-center min-h-[calc(100vh-68px)] p-6 lg:p-10">
-            <div class="flex flex-col lg:flex-row gap-8 items-center  max-w-6xl w-full">
+            <div class="flex flex-col lg:flex-row gap-8 items-center justify-center max-w-6xl w-full">
 
                 <!-- Registration Form -->
-                <div class="w-full max-w-[400px] min-h-[440px] bg-white border border-[#A4A4A4] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 flex flex-col">
+                <div class="w-full max-w-[1000px] min-h-[440px] bg-white border border-[#A4A4A4] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 flex flex-col">
                     <h2 class="text-2xl font-semibold text-slate-800 mb-8 text-left">Register</h2>
-
-                    <form action="{{ route('register') }}" method="POST" class="flex flex-col flex-grow space-y-5">
-                        @csrf
-                        <!-- Name Field -->
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                                required
-                                autofocus
-                            >
-                        </div>
-
-                        <!-- Email Field -->
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                                required
-                            >
-                        </div>
-
-                        <!-- Password Field -->
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-                            <div class="relative">
+                    <div class="flex gap-10">
+                        <form action="{{ route('register') }}" method="POST" class="flex flex-col flex-grow space-y-5">
+                            @csrf
+                            <!-- Name Field -->
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
                                 <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    class="w-full px-4 py-3 pr-12 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    required
+                                    autofocus
+                                >
+                            </div>
+
+                            <!-- Email Field -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                     required
                                 >
-                                <button
-                                    type="button"
-                                    onclick="togglePassword('password')"
-                                    class="absolute inset-y-0 right-0 pr-3 flex items-center"
-                                    aria-label="Toggle password visibility"
+                            </div>
+
+                            <!-- Password Field -->
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        class="w-full px-4 py-3 pr-12 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                        required
+                                    >
+                                    <button
+                                        type="button"
+                                        onclick="togglePassword('password')"
+                                        class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                        aria-label="Toggle password visibility"
+                                    >
+                                        <svg id="eye-icon-password" class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <svg id="eye-slash-icon-password" class="h-5 w-5 text-slate-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.052 10.052 0 013.646-4.85M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.354-4.354l-14.708 14.708" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password Field -->
+                            <div>
+                                <label for="password_confirmation" class="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    id="password_confirmation"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                                    required
                                 >
-                                    <svg id="eye-icon-password" class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    <svg id="eye-slash-icon-password" class="h-5 w-5 text-slate-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.052 10.052 0 013.646-4.85M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.354-4.354l-14.708 14.708" />
-                                    </svg>
+                            </div>
+
+                            <!-- Submit Button and Login Link -->
+                            <div class="mt-auto pt-5">
+                                <button
+                                    type="submit"
+                                    class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                >
+                                    Submit
                                 </button>
+                                <p class="text-xs text-center text-slate-600 mt-4">
+                                    Already have an account?
+                                    <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 hover:underline">Sign in</a>
+                                </p>
+                            </div>
+                        </form>
+                        <div class="w-full max-w-[550px] h-[440px] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] relative overflow-hidden flex items-center sm:hidden lg:flex">
+                            <img
+                                src="welcome_photo.png"
+                                alt="Welcome background"
+                                class="absolute inset-0 w-full h-full object-cover z-9"
+                            >
+                            <div class="absolute inset-0 bg-black/60"></div>
+                            <div class="relative z-10 text-white p-8 lg:p-12">
+                                <h1 class="text-2xl lg:text-3xl font-bold mb-4 leading-tight">Welcome to findr.</h1>
+                                <p>A Centralized Lost and Found Website</p>
                             </div>
                         </div>
-
-                        <!-- Confirm Password Field -->
-                        <div>
-                            <label for="password_confirmation" class="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
-                            <input
-                                type="password"
-                                name="password_confirmation"
-                                id="password_confirmation"
-                                class="w-full px-4 py-3 border border-slate-300 rounded-md bg-slate-100 text-slate-900 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                                required
-                            >
-                        </div>
-
-                        <!-- Submit Button and Login Link -->
-                        <div class="mt-auto pt-5">
-                            <button
-                                type="submit"
-                                class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-md shadow-sm transition duration-150 ease-in-out"
-                            >
-                                Submit
-                            </button>
-                            <p class="text-xs text-center text-slate-600 mt-4">
-                                Already have an account?
-                                <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 hover:underline">Sign in</a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Welcome Section -->
-                <div class="w-full max-w-[550px] h-[440px] rounded-[10px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] relative overflow-hidden flex items-center sm:hidden lg:flex">
-                    <img
-                        src="welcome_photo.png"
-                        alt="Welcome background"
-                        class="absolute inset-0 w-full h-full object-cover -z-10"
-                    >
-                    <div class="absolute inset-0 bg-black/60"></div>
-                    <div class="relative z-10 text-white p-8 lg:p-12">
-                        <h1 class="text-2xl lg:text-3xl font-bold mb-4 leading-tight">Welcome to Our Lost and Found Website!</h1>
-                        </p>
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
 
