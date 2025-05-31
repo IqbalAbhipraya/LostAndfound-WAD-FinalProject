@@ -17,6 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
+    Route::get('/return-report-form', [ReturnReportController::class, 'create'])->name('returnForm.create');
+
 });
 
 

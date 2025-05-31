@@ -23,7 +23,7 @@
                 <a href="#report-found" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Report Found
                 </a>
-                <a href="#report-found" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                <a href="{{ route('return.index') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Return Report
                 </a>
                 <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
