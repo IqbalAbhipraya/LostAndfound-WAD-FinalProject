@@ -18,11 +18,10 @@ return new class extends Migration
             $table->date('found_date');
             $table->string('location');
             $table->string('image');
-            $table->id('founderid');
+            $table->foreignId('founderid');
             $table->string('founder_name');
             $table->string('founder_contact');
             $table->enum('claim_status', ['unclaimed', 'claimed'])->default('unclaimed');
-            $table->timestamp('claimed_at');
             $table->timestamps();
         });
     }

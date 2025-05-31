@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnReportController;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/founditems', 'App\Http\Controllers\FoundItemController');
+    Route::get('/founditems', [FoundItemController::class, 'index'])->name('found.index');
+    Route::get('/founditems/details/{id}', [FoundItemController::class, 'show'])->name('found.show');
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
 
 });
