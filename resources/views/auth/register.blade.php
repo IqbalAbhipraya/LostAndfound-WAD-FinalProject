@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -21,7 +20,7 @@
             }
         </script>
     </head>
-    <body class="font-sans min-h-screen bg-gradient-to-b from-red-200 to-zinc-300 text-slate-800">
+    <body class="font-sans min-h-screen bg-gradient-to-r from-[#E9E9FF] to-[#EDFFBB] text-slate-800">
         <!-- Header -->
         <header class="flex w-full h-[68px] px-6 py-3 items-center justify-between border-b border-[#A4A4A4] bg-white/50 backdrop-blur-[2px] sticky top-0 z-30">
             <a href="/" class="flex items-center text-xl font-bold text-slate-700">
@@ -131,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
 
