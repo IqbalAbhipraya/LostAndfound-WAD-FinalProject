@@ -6,6 +6,7 @@ use App\Http\Controllers\LostItemController;
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnReportController;
+use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +16,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 // Public routes for lost items
 Route::get('/lost-items', [LostItemController::class, 'index'])->name('lost-items.index');
@@ -38,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
     Route::get('/founditems/create', [FoundItemController::class, 'create'])->name('found.create');
     Route::post('/founditems', [FoundItemController::class, 'store'])->name('found.store');
+
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 });
 

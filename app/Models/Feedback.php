@@ -1,5 +1,3 @@
-// app/Models/Feedback.php
-
 <?php
 
 namespace App\Models;
@@ -11,14 +9,18 @@ class Feedback extends Model
 {
     use HasFactory;
 
-    // Nama tabel jika berbeda dari nama model (plural)
-    protected $table = 'feedback'; // Opsional, defaultnya sudah 'feedback'
 
-    // Kolom yang boleh diisi secara massal
+    protected $table = 'feedback'; 
+    
     protected $fillable = [
         'name',
         'email',
         'subject',
         'message',
     ];
+        
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
