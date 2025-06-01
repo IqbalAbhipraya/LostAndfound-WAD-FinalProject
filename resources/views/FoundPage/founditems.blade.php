@@ -35,7 +35,7 @@
         <div id="itemsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @forelse($foundItems as $item)
             <!-- Item Card -->
-            <div class="item-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+            <div class="item-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden size-fit">
                 <!-- Card Header -->
                 <div class="bg-gray-50 p-4 border-b border-gray-100">
                     <div class="flex items-center gap-3">
@@ -74,18 +74,21 @@
                     <p class="item-description text-sm text-gray-700 leading-relaxed mb-4">
                         {{ Str::limit($item->description ?? 'No description available', 80) }}
                     </p>
-                    <div class="flex items-center justify-between">
-                        <button class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300"
+                    
+                    <div class="flex flex-col items-center justify-between gap-5">
+                        <div class="flex items-center justify-between gap-5">
+                            <button class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300"
                                 onclick="showContact('{{ $item->founder_contact }}')">
-                            Contact
-                        </button>
-                        <a href="{{ route('found.show', $item->id) }}"
-                           class="text-blue-500 hover:text-blue-700 text-sm font-medium">
-                            View Details
-                        </a>
+                                Contact
+                            </button>
+                            <a href="{{ route('found.show', $item->id) }}"
+                            class="text-blue-500 hover:text-blue-700 text-sm font-medium">
+                                View Details
+                            </a>
+                        </div>
                         @if(Auth::check() && Auth::user()->id === $item->founderid)
                         <button onclick="showDeleteModal({{ $item->id }})"
-                                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300">
+                                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 w-full">
                             Delete
                         </button>
                         @endif
@@ -140,7 +143,7 @@
             <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4">
                 <h3 class="text-lg font-bold mb-4">Confirm Deletion</h3>
                 <p class="text-gray-700 mb-4">Are you sure you want to delete this item? This action cannot be undone.</p>
-                <form id="deleteForm" method="POST" action="{{ route('found.destroy', $item->id) }}">
+                <form id="deleteForm" method="POST" action="">
                     @csrf
                     @method('DELETE')
                     <div class="flex justify-end gap-3">
@@ -219,9 +222,11 @@
                     searchItems();
                 }
             });
-            function showDeleteModal(itemId) {
+            function showDeleteModal(item_id) {
                 const form = document.getElementById('deleteForm');
-                form.action = "{{ route('found.destroy') }}";
+                const templateUrlUntukDeleteV = "{{ route('found.destroy', 'id') }}";
+                form.action = templateUrlUntukDeleteV.replace('id', item_id);
+
                 document.getElementById('deleteModal').classList.remove('hidden');
                 document.getElementById('deleteModal').classList.add('flex');
             }

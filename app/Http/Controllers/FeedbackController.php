@@ -51,6 +51,6 @@ class FeedbackController extends Controller
         Feedback::create($feedbackData);
         
         
-        return redirect()->view('dashboard')->with('success', 'Terima kasih! Feedback Anda telah terkirim.');
+        return redirect()->route('dashboard')->with('success', 'Terima kasih! Feedback Anda telah terkirim.');
     }
 }

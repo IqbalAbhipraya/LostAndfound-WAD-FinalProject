@@ -16,7 +16,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased >
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900 relative">
             @include('layouts.navigation')
 
@@ -30,7 +30,7 @@
             @endisset -->
 
             <!-- Page Content -->
-            <main class="bg-gradient-to-r from-[#E9E9FF] to-[#EDFFBB]">
+            <main class="bg-gradient-to-r from-[#E9E9FF] to-[#EDFFBB] p-10">
                 @yield('content')
             </main>
 

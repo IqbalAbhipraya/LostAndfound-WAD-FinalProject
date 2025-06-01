@@ -168,7 +168,7 @@
 
                         <div class="border-t border-purple-200 pt-3">
                             <p class="text-sm text-gray-600 mb-2">Contact Information:</p>
-                            <p class="font-medium text-purple-700">{{ $foundItem->user->phone_number ?? 'N/A' }}</p>
+                            <p class="font-medium text-purple-700">{{ $foundItem->founder_contact ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>
