@@ -29,6 +29,10 @@ class FoundItem extends Model
         return $this->belongsTo(User::class, 'founderid');
     }
 
+    public function comments() {
+        return $this->hasMany(Comment::class, 'found_items_id');
+    }
+
     // protected $casts = [
     //     'found_date'  => 'date',
     //     'claimed_at'  => 'datetime',

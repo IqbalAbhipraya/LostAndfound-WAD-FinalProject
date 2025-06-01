@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('lost_date');
             $table->string('location');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('lostid');
             $table->string('lost_name');
             $table->string('lost_contact');

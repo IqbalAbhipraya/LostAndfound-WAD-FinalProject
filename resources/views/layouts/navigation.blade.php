@@ -11,10 +11,10 @@
                 <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Home
                 </a>
-                <a href="#lost" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                <a href="{{ route('lost-items.index') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Lost
                 </a>
-                <a href="#report-lost" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                <a href="{{ route('lost-items.create') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Report Lost
                 </a>
                 <a href="{{ route('found.index') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
@@ -23,7 +23,7 @@
                 <a href="{{ route('found.create') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Report Found
                 </a>
-                <a href="#report-found" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                <a href="{{ route('return.index') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Return Report
                 </a>
                 <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">

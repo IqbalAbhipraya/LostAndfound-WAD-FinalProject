@@ -15,7 +15,7 @@ class ReturnReportController extends Controller
     }
 
     public function create() {
-        return view('admin.create');
+        return view('returnReport.report-form');
     }
 
     public function store(Request $request) {
