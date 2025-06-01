@@ -23,7 +23,8 @@ class FoundItemController extends Controller
      */
     public function create()
     {
-        return view('FoundPage.form');
+        $user = Auth::user();
+        return view('FoundPage.form', compact('user'));
     }
 
     /**
@@ -34,6 +35,7 @@ class FoundItemController extends Controller
         $request->validate([
             'itemname' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
+            'found_date' => 'required|date',
             'location' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'founder_name' => 'required|string|max:255',
@@ -43,6 +45,7 @@ class FoundItemController extends Controller
         $foundData = $request->only([
             'itemname',
             'description',
+            'found_date',
             'image',
             'location',
             'founder_name',
@@ -57,7 +60,7 @@ class FoundItemController extends Controller
         $founderId = Auth::id();
         $foundData['founderid'] = $founderId;
 
-        auth()->user()->foundItems()->create($foundData);
+        FoundItem::create($foundData);
 
         return redirect()->route('found.index');
     }
@@ -77,7 +80,8 @@ class FoundItemController extends Controller
     public function edit(string $id)
     {
         $foundItem = FoundItem::findOrFail($id);
-        return view('FoundPage.form', compact('foundItem'));
+        $user = Auth::user();
+        return view('FoundPage.form', compact('foundItem', 'user'));
     }
 
     /**
@@ -113,16 +117,24 @@ class FoundItemController extends Controller
             'founder_contact' => $request->founder_contact,
         ]);
 
-        return redirect()->route('founditems.index')->with('success', 'Found item updated successfully.');
+        return redirect()->route('found.index')->with('success', 'Found item updated successfully.');
     }
 
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $foundItem = FoundItem::findOrFail($id);
-        $foundItem->delete();
+    $item = FoundItem::find($id);
 
-        return redirect()->route('founditems.index')->with('success', 'Found item deleted successfully.');
+    if (Auth::id() !== $item->founderid) {abort(403, 'Unauthorized action');
     }
 
-}
+    if ($item->image) {
+        Storage::delete('public/storage/found_items/' . $item->image);
+    }
+
+    $item->delete();
+
+    return redirect()->route('found.index')->with('success', 'Item deleted successfully');
+    }
+
+    }

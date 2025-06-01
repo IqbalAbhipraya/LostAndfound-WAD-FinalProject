@@ -2,10 +2,25 @@
 
 @section('content')
 <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 m-10">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Report Found Item</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+            {{ isset($foundItem) ? 'Edit Found Item' : 'Report Found Item' }}
+        </h2>
 
-        <form class="space-y-6" action="{{ route('found.store') }}" method="POST" enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form class="space-y-6" action="{{ isset($foundItem) ? route('found.update', $foundItem->id) : route('found.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if(isset($foundItem))
+                @method('PUT')
+            @endif
             <!-- Item Name -->
             <div>
                 <label for="itemname" class="block text-sm font-medium text-gray-700 mb-2">
@@ -18,6 +33,7 @@
                     required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="What item did you find?"
+                    value="{{ old('itemname', isset($foundItem) ? $foundItem->itemname : '') }}"
                 >
             </div>
 
@@ -33,7 +49,22 @@
                     rows="4"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors resize-vertical"
                     placeholder="Describe the item in detail (color, brand, size, etc.)..."
-                ></textarea>
+                >{{ old('description', isset($foundItem) ? $foundItem->description : '') }}</textarea>
+            </div>
+
+            <!-- Found Date -->
+            <div>
+                <label for="found_date" class="block text-sm font-medium text-gray-700 mb-2">
+                    Date Found
+                </label>
+                <input
+                    type="date"
+                    id="found_date"
+                    name="found_date"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    value="{{ old('found_date', isset($foundItem) ? $foundItem->found_date : '') }}"
+                >
             </div>
 
             <!-- Founder Name -->
@@ -46,9 +77,14 @@
                     id="founder_name"
                     name="founder_name"
                     required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors {{ auth()->check() && auth()->user()->name ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                     placeholder="Enter your full name"
+                    value="{{ old('founder_name', isset($foundItem) ? $foundItem->founder_name : (auth()->check() && auth()->user()->name ? auth()->user()->name : '')) }}"
+                    @if(auth()->check() && auth()->user()->name) readonly @endif
                 >
+                @if(auth()->check() && auth()->user()->name)
+                    <p class="text-sm text-gray-500 mt-1">This field is automatically filled with your registered name and cannot be changed.</p>
+                @endif
             </div>
 
             <!-- Founder Contact -->
@@ -63,6 +99,7 @@
                     required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="Phone number or email address"
+                    value="{{ old('founder_contact', isset($foundItem) ? $foundItem->founder_contact : '') }}"
                 >
             </div>
 
@@ -78,6 +115,7 @@
                     required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="Where did you find this item?"
+                    value="{{ old('location', isset($foundItem) ? $foundItem->location : '') }}"
                 >
             </div>
 
@@ -94,7 +132,7 @@
                         <div class="flex text-sm text-gray-600">
                             <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-green-500">
                                 <span>Upload a photo</span>
-                                <input id="image" name="image" type="file" accept="image/*" required class="sr-only">
+                                <input id="image" name="image" type="file" accept="image/*" {{ isset($foundItem) ? '' : 'required' }} class="sr-only">
                             </label>
                             <p class="pl-1">or drag and drop</p>
                         </div>
@@ -113,7 +151,7 @@
                     type="submit"
                     class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 >
-                    Report Found Item
+                    {{ isset($foundItem) ? 'Update Found Item' : 'Report Found Item' }}
                 </button>
             </div>
         </form>

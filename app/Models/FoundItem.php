@@ -15,6 +15,7 @@ class FoundItem extends Model
         'itemname',
         'description',
         'location',
+        'found_date',
         'image',
         'founderid',
         'founder_name',
