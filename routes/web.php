@@ -4,7 +4,9 @@ use App\Http\Controllers\LostItemController;
 use App\Http\Controllers\FoundItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnReportController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CommentController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,8 +16,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/founditems/create', [FoundItemController::class, 'create'])->name('found.create');
     Route::post('/founditems', [FoundItemController::class, 'store'])->name('found.store');
 
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
     Route::get('/lost-items', [LostItemController::class, 'index'])->name('lost-items.index');
     Route::get('/lost-items/details/{id}', [LostItemController::class, 'show'])->name('lost-items.show');
     Route::get('/lost-items/create', [LostItemController::class, 'create'])->name('lost-items.create'); 
@@ -46,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 
 });
 
