@@ -26,7 +26,6 @@ Route::middleware('auth')->group(function () {
     // Found items resource routes (if you still need them)
     Route::resource('/founditems', FoundItemController::class);
 
-    Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
     Route::get('/founditems', [FoundItemController::class, 'index'])->name('found.index');
     Route::get('/founditems/details/{id}', [FoundItemController::class, 'show'])->name('found.show');
     Route::get('/founditems/create', [FoundItemController::class, 'create'])->name('found.create');
@@ -34,9 +33,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/founditems/{id}/edit', [FoundItemController::class, 'edit'])->name('found.edit');
     Route::put('/founditems/{id}', [FoundItemController::class, 'update'])->name('found.update');
-    Route::delete('/founditems', [FoundItemController::class, 'destroy'])->name('found.destroy');
+    Route::delete('/founditems/{id}', [FoundItemController::class, 'destroy'])->name('found.destroy');
 
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
+    Route::get('/return-report-form', [ReturnReportController::class, 'create'])->name('return.create');
 
 
     Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');

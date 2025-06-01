@@ -123,18 +123,18 @@ class FoundItemController extends Controller
 
     public function destroy($id)
     {
-    $item = FoundItem::find($id);
+        $item = FoundItem::findOrFail($id);
 
-    if (Auth::id() !== $item->founderid) {abort(403, 'Unauthorized action');
+        if (Auth::id() !== $item->founderid) {abort(403, 'Unauthorized action');
+        }
+
+        if ($item->image) {
+            Storage::delete('/storage/' . $item->image);
+        }
+
+        $item->delete();
+
+        return redirect()->route('found.index')->with('success', 'Item deleted successfully');
     }
 
-    if ($item->image) {
-        Storage::delete('public/storage/found_items/' . $item->image);
-    }
-
-    $item->delete();
-
-    return redirect()->route('found.index')->with('success', 'Item deleted successfully');
-    }
-
-    }
+}
