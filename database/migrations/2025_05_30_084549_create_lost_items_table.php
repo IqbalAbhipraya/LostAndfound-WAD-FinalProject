@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('itemname');
             $table->text('description')->nullable();
-            $table->date('lost_date');
+            $table->date('lost_date')->default(now());
             $table->string('location');
             $table->string('image')->nullable();
-            $table->string('lostid');
+            $table->foreignId('userid'); // foreign key to users table
             $table->string('lost_name');
             $table->string('lost_contact');
             $table->enum('claim_status', ['unclaimed', 'claimed'])->default('unclaimed');
