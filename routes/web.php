@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/lost-items', [LostItemController::class, 'index'])->name('lost-items.index');
     Route::get('/lost-items/details/{id}', [LostItemController::class, 'show'])->name('lost-items.show');
-    Route::get('/lost-items/create', [LostItemController::class, 'create'])->name('lost-items.create'); 
+    Route::get('/lost-items/create', [LostItemController::class, 'create'])->name('lost-items.create');
     Route::post('/lost-items', [LostItemController::class, 'store'])->name('lost-items.store');
 
     Route::get('/lost-items/{id}/edit', [LostItemController::class, 'edit'])->name('lost-items.edit');
