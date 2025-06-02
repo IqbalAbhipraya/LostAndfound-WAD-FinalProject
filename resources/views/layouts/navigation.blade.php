@@ -29,6 +29,11 @@
                 <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
                     Profile
                 </a>
+                @if (Auth::check() && Auth::user()->role === 'admin')
+                <a href="{{ route('profile.edit') }}" class="text-gray-700 hover:text-orange-600 text-sm font-medium transition-colors duration-200">
+                    Admin View
+                </a>
+                @endif
             </div>
 
             <!-- Sign Out Button -->
