@@ -74,7 +74,7 @@
                     <p class="item-description text-sm text-gray-700 leading-relaxed mb-4">
                         {{ Str::limit($item->description ?? 'No description available', 80) }}
                     </p>
-                    
+
                     <div class="flex flex-col items-center justify-between gap-5">
                         <div class="flex items-center justify-between gap-5">
                             <button class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300"
@@ -86,7 +86,7 @@
                                 View Details
                             </a>
                         </div>
-                        @if(Auth::check() && Auth::user()->id === $item->founderid)
+                        @if(Auth::check() && Auth::user()->id === $item->founderid || Auth::check() && Auth::user()->role === 'admin')
                         <button onclick="showDeleteModal({{ $item->id }})"
                                 class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300 w-full">
                             Delete
