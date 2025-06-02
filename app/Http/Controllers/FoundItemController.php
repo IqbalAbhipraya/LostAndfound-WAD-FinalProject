@@ -125,7 +125,8 @@ class FoundItemController extends Controller
     {
         $item = FoundItem::findOrFail($id);
 
-        if (Auth::id() !== $item->founderid) {abort(403, 'Unauthorized action');
+        if (Auth::id() !== $item->founderid && Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized action');
         }
 
         if ($item->image) {
