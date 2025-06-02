@@ -36,7 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/founditems/{id}', [FoundItemController::class, 'destroy'])->name('found.destroy');
 
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
-    Route::get('/return-report-form', [ReturnReportController::class, 'create'])->name('return.create');
+    Route::get('/return-report-form/create/{id}', [ReturnReportController::class, 'create'])->name('return.create');
+    Route::post('/return-report-form/create/{id}', [ReturnReportController::class, 'store'])->name('return.store');
 
 
     Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
