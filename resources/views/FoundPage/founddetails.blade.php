@@ -17,13 +17,24 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
-            <div class="flex items-center justify-between">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white ">
+            <div class="flex items-center space-x-4 flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">{{ $foundItem->itemname }}</h1>
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-3xl font-bold mb-2">{{ $foundItem->itemname }}</h1>
+                        @if(Auth::check() && Auth::user()->id === $foundItem->founderid)
+                            <button onclick="location.href='{{ route('found.edit', $foundItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
+
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
+                            </button>
+                        @endif
+                    </div>
+
                     <p class="text-green-100 text-lg">Found at {{ $foundItem->location }}</p>
                 </div>
-                <div class="text-right">
+
+                <div class="flex-shrink-0 text-right">
                     <div class="bg-white bg-opacity-20 rounded-full px-4 py-2">
                         <p class="text-sm font-medium">Found Date</p>
                         <p class="text-lg font-bold">{{ \Carbon\Carbon::parse($foundItem->found_date)->format('M d, Y') }}</p>
