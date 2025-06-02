@@ -98,7 +98,7 @@
                     name="founder_contact"
                     required
                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-                    placeholder="Phone number or email address"
+                    placeholder="Enter your phone number"
                     value="{{ old('founder_contact', isset($foundItem) ? $foundItem->founder_contact : '') }}"
                 >
             </div>
