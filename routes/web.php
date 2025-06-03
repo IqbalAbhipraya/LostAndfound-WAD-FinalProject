@@ -58,6 +58,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 });
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/return-report/{id}/edit', [ReturnReportController::class, 'edit'])->name('return.edit');
+    Route::put('/return-report/{reportData}', [ReturnReportController::class, 'update'])->name('return.update');
+    Route::delete('/return-report/{returnReport}', [ReturnReportController::class, 'destroy'])->name('return.delete');
+
+});
 
 
 require __DIR__.'/auth.php';
