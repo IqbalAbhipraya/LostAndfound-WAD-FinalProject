@@ -36,7 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/founditems/{id}', [FoundItemController::class, 'destroy'])->name('found.destroy');
 
     Route::get('/return-report', [ReturnReportController::class, 'index'])->name('return.index');
-    Route::get('/return-report-form', [ReturnReportController::class, 'create'])->name('return.create');
+    Route::get('/return-report-form/create/{id}', [ReturnReportController::class, 'create'])->name('return.create');
+    Route::post('/return-report-form/create/{id}', [ReturnReportController::class, 'store'])->name('return.store');
 
 
     Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
@@ -55,6 +56,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+});
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/return-report/{id}/edit', [ReturnReportController::class, 'edit'])->name('return.edit');
+    Route::put('/return-report/{reportData}', [ReturnReportController::class, 'update'])->name('return.update');
+    Route::delete('/return-report/{returnReport}', [ReturnReportController::class, 'destroy'])->name('return.delete');
 
 });
 

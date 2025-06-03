@@ -216,6 +216,17 @@
                         </div>
                     </div>
                 </div>
+                @if(Auth::check() && Auth::user()->id === $foundItem->founderid)
+                <div>
+                    <a href="{{ route('return.create', $foundItem->id) }}"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Make Return Report 
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
 

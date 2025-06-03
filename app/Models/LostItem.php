@@ -18,14 +18,26 @@ class LostItem extends Model
         'location',
         'image',
         'lostid',
+        'userid',
         'lost_name',
         'lost_contact',
         'claim_status',
         'claimed_at'
     ];
 
-    protected $casts = [
-        'lost_date'  => 'date',
-        'claimed_at' => 'datetime',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userid');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'lost_items_id');
+    }
+
+
+    // protected $casts = [
+    //     'lost_date'  => 'date',
+    //     'claimed_at' => 'datetime',
+    // ];
 }

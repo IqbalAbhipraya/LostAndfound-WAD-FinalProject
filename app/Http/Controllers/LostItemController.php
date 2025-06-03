@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\LostItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class LostItemController extends Controller
 {
@@ -20,7 +22,8 @@ class LostItemController extends Controller
      */
     public function create()
     {
-        return view('LostPage.form');
+        $user = Auth::user();
+        return view('LostPage.form', compact('user'));
     }
 
     /**
@@ -36,17 +39,35 @@ class LostItemController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'lost_name' => 'required|string|max:255',
             'lost_contact' => 'required|string|max:255',
+            'lostid' => 'required|string|max:255',
+            'claim_status' => 'required|string|in:claimed,unclaimed',
+            'claimed_at' => 'nullable|date',
         ]);
 
-        $lostItem = LostItem::create($request->except('image'));
+        $lostData = $request->only([
+            'itemname',
+            'description',
+            'lost_date',
+            'image',
+            'location',
+            'lost_name',
+            'lost_contact',
+            'lostid',
+            'claim_status',
+            'claimed_at'
+        ]);
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('lost_items', 'public');
-            $lostItem->image = $imagePath;
-            $lostItem->save();
+            $lostData['image'] = $imagePath;
         }
 
-        return redirect()->route('lost-items.index')->with('success', 'Lost item created successfully.');
+        $userId = Auth::id();
+        $lostData['userid'] = $userId;
+
+        LostItem::create($lostData);
+
+        return redirect()->route('lost-items.index')->with('success', 'Lost item reported successfully.');
     }
 
     /**
@@ -55,7 +76,7 @@ class LostItemController extends Controller
     public function show(string $id)
     {
         $lostItem = LostItem::findOrFail($id);
-        return view('LostPage.lostitems', compact('lostItem'));
+        return view('LostPage.lostdetails', compact('lostItem'));
     }
 
     /**
@@ -64,7 +85,8 @@ class LostItemController extends Controller
     public function edit(string $id)
     {
         $lostItem = LostItem::findOrFail($id);
-        return view('LostPage.form', compact('lostItem'));
+        $user = Auth::user();
+        return view('LostPage.form', compact('lostItem', 'user'));
     }
 
     /**
@@ -80,28 +102,48 @@ class LostItemController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'lost_name' => 'required|string|max:255',
             'lost_contact' => 'required|string|max:255',
+            'lostid' => 'required|string|max:255',
+            'claim_status' => 'required|string|in:claimed,unclaimed',
+            'claimed_at' => 'nullable|date',
         ]);
 
         $lostItem = LostItem::findOrFail($id);
-        $lostItem->update($request->except('image'));
 
+        $imagePath = $lostItem->image; // Keep existing image by default
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('lost_items', 'public');
-            $lostItem->image = $imagePath;
-            $lostItem->save();
         }
+
+        $lostItem->update([
+            'itemname' => $request->itemname,
+            'description' => $request->description,
+            'lost_date' => $request->lost_date,
+            'location' => $request->location,
+            'image' => $imagePath,
+            'lost_name' => $request->lost_name,
+            'lost_contact' => $request->lost_contact,
+            'lostid' => $request->lostid,
+            'claim_status' => $request->claim_status,
+            'claimed_at' => $request->claimed_at,
+        ]);
 
         return redirect()->route('lost-items.index')->with('success', 'Lost item updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $lostItem = LostItem::findOrFail($id);
-        $lostItem->delete();
+        $item = LostItem::findOrFail($id);
 
-        return redirect()->route('lost-items.index')->with('success', 'Lost item deleted successfully.');
+        if (Auth::id() !== $item->userid) {
+            abort(403, 'Unauthorized action');
+        }
+
+        if ($item->image) {
+            Storage::delete('/storage/' . $item->image);
+        }
+
+        $item->delete();
+
+        return redirect()->route('lost-items.index')->with('success', 'Item deleted successfully');
     }
 }
