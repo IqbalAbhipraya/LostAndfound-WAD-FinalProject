@@ -39,7 +39,6 @@ class LostItemController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'lost_name' => 'required|string|max:255',
             'lost_contact' => 'required|string|max:255',
-            'lostid' => 'required|string|max:255',
             'claim_status' => 'required|string|in:claimed,unclaimed',
             'claimed_at' => 'nullable|date',
         ]);
@@ -52,7 +51,6 @@ class LostItemController extends Controller
             'location',
             'lost_name',
             'lost_contact',
-            'lostid',
             'claim_status',
             'claimed_at'
         ]);
@@ -102,7 +100,6 @@ class LostItemController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'lost_name' => 'required|string|max:255',
             'lost_contact' => 'required|string|max:255',
-            'lostid' => 'required|string|max:255',
             'claim_status' => 'required|string|in:claimed,unclaimed',
             'claimed_at' => 'nullable|date',
         ]);
@@ -122,7 +119,6 @@ class LostItemController extends Controller
             'image' => $imagePath,
             'lost_name' => $request->lost_name,
             'lost_contact' => $request->lost_contact,
-            'lostid' => $request->lostid,
             'claim_status' => $request->claim_status,
             'claimed_at' => $request->claimed_at,
         ]);
