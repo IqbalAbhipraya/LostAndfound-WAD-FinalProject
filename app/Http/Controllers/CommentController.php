@@ -13,9 +13,9 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'comments' => 'required|string|max:1000', 
-            'item_id' => 'required|integer',          
-            'item_type' => 'required|in:lost,found',  
+            'comments' => 'required|string|max:1000',
+            'item_id' => 'required|integer',
+            'item_type' => 'required|in:lost,found',
         ]);
 
         $comment = new Comment();
@@ -41,12 +41,11 @@ class CommentController extends Controller
         $comment->save();
 
         if ($request->item_type === 'lost') {
-            return redirect()->route('lost-items.show', $request->item_id)->with('Success', 'Comment successfully added!');
+            return redirect()->route('lost-items.show', $request->item_id)->with('success', 'Comment successfully added!');
         } else { 
-            return redirect()->route('found.show', $request->item_id)->with('Success', 'Comment successfully added!');
+            return redirect()->route('found.show', $request->item_id)->with('success', 'Comment successfully added!');
         }
     }
-
 
     public function edit(Comment $comment)
     {
@@ -54,10 +53,8 @@ class CommentController extends Controller
             abort(403, 'You do not have permission to edit this comment.');
         }
 
-
         return view('comments.edit', compact('comment'));
     }
-
 
     public function update(Request $request, Comment $comment)
     {
@@ -73,14 +70,13 @@ class CommentController extends Controller
         $comment->save();
 
         if ($comment->lost_items_id) {
-            return redirect()->route('lost-items.show', $comment->lost_items_id)->with('Success', 'Comment updated successfully!');
+            return redirect()->route('lost-items.show', $comment->lost_items_id)->with('success', 'Comment updated successfully!');
         } elseif ($comment->found_items_id) {
-            return redirect()->route('found-items.show', $comment->found_items_id)->with('Success', 'Comment updated successfully!');
+            return redirect()->route('found.show', $comment->found_items_id)->with('success', 'Comment updated successfully!');
         }
 
-        return back()->with('Success', 'Comment successfully updated!');
+        return back()->with('success', 'Comment successfully updated!');
     }
-
 
     public function destroy(Comment $comment)
     {
@@ -99,8 +95,8 @@ class CommentController extends Controller
         $comment->delete(); 
 
         if ($redirectRouteName && $redirectItemId) {
-             return redirect()->route($redirectRouteName, $redirectItemId)->with('Success', 'Comment successfully deleted.');
+             return redirect()->route($redirectRouteName, $redirectItemId)->with('success', 'Comment successfully deleted.');
         }
-        return back()->with('Success', 'Comment successfully deleted.'); 
+        return back()->with('success', 'Comment successfully deleted.'); 
     }
 }
