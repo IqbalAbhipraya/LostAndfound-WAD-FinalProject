@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ReturnReportApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FoundItemApiController;
+use App\Http\Controllers\Api\FeedbackApiController;
 
 
 // Route::get('/user', function (Request $request) {
@@ -15,4 +16,7 @@ use App\Http\Controllers\Api\FoundItemApiController;
 Route::get('/returnReport', [ReturnReportApiController::class, 'index']);
 
 Route::get('/founditems', [FoundItemApiController::class, 'indexApi']);
+
+Route::get('/Feedback', [FeedbackApiController::class, 'FeedbackApi']);
+
 
