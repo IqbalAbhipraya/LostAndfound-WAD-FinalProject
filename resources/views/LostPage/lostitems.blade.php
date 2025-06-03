@@ -223,8 +223,7 @@
                 document.getElementById('deleteModal').classList.add('flex');
             }
 
-            function hideDeleteMod
-            al() {
+            function hideDeleteModal() {
                 document.getElementById('deleteModal').classList.add('hidden');
                 document.getElementById('deleteModal').classList.remove('flex');
             }
