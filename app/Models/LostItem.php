@@ -17,7 +17,6 @@ class LostItem extends Model
         'lost_date',
         'location',
         'image',
-        'lostid',
         'userid',
         'lost_name',
         'lost_contact',
