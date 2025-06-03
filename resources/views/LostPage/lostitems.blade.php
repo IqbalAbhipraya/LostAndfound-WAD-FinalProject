@@ -37,14 +37,14 @@
             <!-- Item Card -->
             <div class="item-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden size-fit">
                 <!-- Card Header -->
-                <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 border-b border-gray-100 text-white">
+                <div class="bg-gray-50 p-4 border-b border-gray-100">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                             {{ strtoupper(substr($item->lost_name, 0, 1)) }}
                         </div>
                         <div>
-                            <h3 class="font-semibold">{{ $item->lost_name }}</h3>
-                            <p class="text-xs">{{ \Carbon\Carbon::parse($item->lost_date)->format('M d, Y') }}</p>
+                            <h3 class="font-semibold text-gray-800">{{ $item->lost_name }}</h3>
+                            <p class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($item->lost_date)->format('M d, Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -56,12 +56,12 @@
                              alt="{{ $item->itemname }}"
                              class="w-full h-full object-cover">
                     @else
-                        <div class="w-full h-full flex items-center justify-center">
-                            <div class="text-center text-gray-400">
-                                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <p class="text-sm">No Image</p>
+                        <!-- Default placeholder shapes -->
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-0 h-0 border-l-6 border-r-6 border-b-10 border-l-transparent border-r-transparent border-b-gray-400"></div>
+                            <div class="flex gap-4">
+                                <div class="w-8 h-8 bg-gray-400"></div>
+                                <div class="w-8 h-8 bg-gray-400 rounded-full"></div>
                             </div>
                         </div>
                     @endif
@@ -76,7 +76,7 @@
                     </p>
                     
                     <div class="flex flex-col items-center justify-between gap-5">
-                        <div class="flex items-center justify-between gap-5 w-full">
+                        <div class="flex items-center justify-between gap-5">
                             <button class="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300"
                                 onclick="showContact('{{ $item->lost_contact }}')">
                                 Contact
@@ -129,20 +129,10 @@
 
         <!-- Contact Modal (Hidden by default) -->
         <div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
-                <div class="text-center mb-4">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Contact Owner</h3>
-                    <p class="text-gray-600 mb-4">Reach out to help return this item</p>
-                </div>
-                <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                    <p class="text-sm text-gray-600 mb-2">Contact Information:</p>
-                    <p id="contactInfo" class="font-semibold text-lg text-blue-600 break-all"></p>
-                </div>
+            <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4">
+                <h3 class="text-lg font-bold mb-4">Contact Information</h3>
+                <p class="text-gray-700 mb-4">You can contact the finder at:</p>
+                <p id="contactInfo" class="font-semibold text-blue-600 mb-6"></p>
                 <button onclick="hideContact()"
                         class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-full transition-colors duration-300">
                     Close
@@ -169,15 +159,6 @@
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-
-        <div id="copyToast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Contact information copied!
             </div>
         </div>
 
@@ -242,34 +223,10 @@
                 document.getElementById('deleteModal').classList.add('flex');
             }
 
-            function hideDeleteModal() {
+            function hideDeleteMod
+            al() {
                 document.getElementById('deleteModal').classList.add('hidden');
                 document.getElementById('deleteModal').classList.remove('flex');
-            }
-
-            function copyContactInfo(contact) {
-                navigator.clipboard.writeText(contact).then(function() {
-                    const toast = document.getElementById('copyToast');
-                    toast.classList.remove('translate-x-full');
-                    setTimeout(() => {
-                        toast.classList.add('translate-x-full');
-                    }, 3000);
-                    hideContact();
-                }).catch(function(err) {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = contact;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-
-                    const toast = document.getElementById('copyToast');
-                    toast.classList.remove('translate-x-full');
-                    setTimeout(() => {
-                        toast.classList.add('translate-x-full');
-                    }, 3000);
-                    hideContact();
-                });
             }
 
             document.getElementById('contactModal').addEventListener('click', function(e) {
@@ -290,5 +247,7 @@
                 }
             });
         </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
     </div>
 @endsection

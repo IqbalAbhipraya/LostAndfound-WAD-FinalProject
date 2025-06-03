@@ -23,10 +23,26 @@
                 <div>
                     <div class="flex items-center gap-3">
                         <h1 class="text-3xl font-bold mb-2">{{ $lostItem->itemname }}</h1>
-                        @if(Auth::check() && Auth::user()->id === $lostItem->lostid)
-                            <button onclick="location.href='{{ route('lost-items.edit', $lostItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
-                            </button>
+                        @if(Auth::check() && (Auth::user()->id == $lostItem->lostid || Auth::user()->id == $lostItem->userid))
+                            <div class="flex items-center gap-2">
+                                <!-- Edit Button -->
+                                <button onclick="location.href='{{ route('lost-items.edit', $lostItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
+                                </button>
+                                <!-- Delete Button -->
+                                <form action="{{ route('lost-items.destroy', $lostItem->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        onclick="return confirm('Are you sure you want to delete this lost item? This action cannot be undone.');"
+                                        class="text-red-200 hover:text-red-100 focus:outline-none transition-colors duration-200"
+                                        title="Delete Lost Item">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         @endif
                     </div>
 
@@ -200,6 +216,37 @@
                         Copy Contact
                     </button>
                 </div>
+
+                <!-- Additional Delete Button (More Prominent) -->
+                @if(Auth::check() && (Auth::user()->id == $lostItem->lostid || Auth::user()->id == $lostItem->userid))
+                <div class="border-t border-gray-200 pt-6">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-red-800 mb-2">Delete This Lost Item</h4>
+                                <p class="text-red-700 text-sm mb-4">
+                                    Once deleted, this lost item report will be permanently removed and cannot be recovered.
+                                </p>
+                                <form action="{{ route('lost-items.destroy', $lostItem->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        onclick="return confirm('Are you sure you want to delete this lost item? This action cannot be undone.');"
+                                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        Delete Lost Item
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                     <div class="flex items-start gap-3">
