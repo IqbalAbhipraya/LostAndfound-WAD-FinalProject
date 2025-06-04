@@ -2,7 +2,8 @@
 
 @section('content')
 <?php
-    $foundItem->load('user', 'comments.commenter');
+    // Hanya memuat relasi 'comments' dan 'commenter' karena info user akan diambil langsung dari item
+    $foundItem->load('comments.commenter');
 ?>
 
 <div class="max-w-4xl mx-auto p-6">
@@ -17,17 +18,29 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white ">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
             <div class="flex items-center space-x-4 flex justify-between items-center">
                 <div>
                     <div class="flex items-center gap-3">
                         <h1 class="text-3xl font-bold mb-2">{{ $foundItem->itemname }}</h1>
-                        @if(Auth::check() && Auth::user()->id === $foundItem->founderid || Auth::check() && Auth::user()->role === 'admin')
-                            <button onclick="location.href='{{ route('found.edit', $foundItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
-
-                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
-                            </button>
+                        @if(Auth::check() && (Auth::user()->id === $foundItem->founderid || (Auth::user()->user_type ?? '') === 'admin'))
+                            <div class="flex items-center gap-2">
+                                <button onclick="location.href='{{ route('found.edit', $foundItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
+                                </button>
+                                
+                                <form action="{{ route('found.destroy', $foundItem->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this found item? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="text-red-200 hover:text-red-100 focus:outline-none transition-colors duration-200"
+                                            title="Delete Found Item">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         @endif
                     </div>
 
@@ -76,64 +89,77 @@
                     @endif
 
                     @auth
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                Leave a Comment
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ route('comments.store') }}" method="POST">
-                                    @csrf
+                        <div class="bg-white p-6 rounded-xl shadow-lg mt-6 border border-gray-200">
+                            <h4 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Leave a Comment</h4>
+                            
+                            <form action="{{ route('comments.store') }}" method="POST">
+                                @csrf 
 
-                                    <div class="mb-3">
-                                        <label for="comments" class="form-label">Your Comment</label>
-                                        <textarea class="form-control @error('comments') is-invalid @enderror" id="comments" name="comments" rows="3" placeholder="Write your comment here..." required>{{ old('comments') }}</textarea>
-                                        @error('comments')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="comments" class="block text-gray-700 text-sm font-medium mb-2">Your Comment</label>
+                                    <textarea 
+                                        class="form-textarea w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 
+                                               @error('comments') border-red-500 @enderror" 
+                                        id="comments" 
+                                        name="comments" 
+                                        rows="4" 
+                                        placeholder="Write your comment here..." 
+                                        required>{{ old('comments') }}</textarea>
+                                    @error('comments')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
-                                    <input type="hidden" name="item_id" value="{{ $foundItem->id }}">
-                                    <input type="hidden" name="item_type" value="found">
+                                <input type="hidden" name="item_id" value="{{ $foundItem->id }}">
+                                <input type="hidden" name="item_type" value="found"> 
 
-                                    <button type="submit" class="btn btn-primary">Post Comment</button>
-                                </form>
-                            </div>
+                                <button type="submit" 
+                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg 
+                                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
+                                    Post Comment
+                                </button>
+                            </form>
                         </div>
                     @else
-                        <p class="text-center mt-4">Please <a href="{{ route('login') }}">login</a> to leave a comment.</p>
+                        <p class="text-center mt-4">Please <a href="{{ route('login') }}" class="text-blue-600 hover:underline font-medium">login</a> to leave a comment.</p>
                     @endauth
 
-                    <div class="mt-4">
-                        <h3>Comments ({{ $foundItem->comments->count() }})</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-lg mt-6 border border-gray-200">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Comments ({{ $foundItem->comments->count() }})</h4>
 
                         @forelse($foundItem->comments->sortByDesc('created_at') as $comment)
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-1">
-                                        {{ $comment->commenter->name ?? 'User Tidak Dikenal' }}
-                                    </h5>
-                                    <p class="card-text mb-2">{{ $comment->comments }}</p>
-                                    <small class="text-muted">Posted {{ $comment->created_at->diffForHumans() }}</small>
-
-                                    @auth
-                                        @if (Auth::id() == $comment->commenter_id || (Auth::user() && Auth::user()->user_type == 'admin'))
-                                            <div class="mt-2">
-                                                <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-outline-secondary me-2">Edit</a>
-
-                                                <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this comment? This action cannot be undone.');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                                </form>
-                                            </div>
-                                        @endif
-                                    @endauth
+                            <div class="border-b border-gray-200 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+                                <div class="flex items-start mb-2">
+                                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm flex-shrink-0">
+                                        {{ strtoupper(substr($comment->commenter->name ?? '?', 0, 1)) }}
+                                    </div>
+                                    <div class="ml-3 flex-grow">
+                                        <p class="font-semibold text-gray-800">{{ $comment->commenter->name ?? 'User Tidak Dikenal' }}</p>
+                                        <p class="text-gray-500 text-xs">{{ $comment->created_at->diffForHumans() }}</p>
+                                    </div>
                                 </div>
+                                <p class="text-gray-700 text-base leading-relaxed mb-3">{{ $comment->comments }}</p>
+
+                                @auth
+                                    @if (Auth::id() == $comment->commenter_id || (Auth::user() && (Auth::user()->user_type ?? '') === 'admin'))
+                                        <div class="flex space-x-2 text-sm">
+                                            <a href="{{ route('comments.edit', $comment->id) }}" 
+                                               class="text-blue-600 hover:text-blue-800 font-medium">Edit</a>
+                                            
+                                            <span class="text-gray-400">|</span>
+
+                                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this comment? This action cannot be undone.');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        class="text-red-600 hover:text-red-800 font-medium bg-transparent border-none p-0 cursor-pointer">Delete</button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                @endauth
                             </div>
                         @empty
-                            <p class="text-muted">No comments yet. Be the first to comment!</p>
+                            <p class="text-gray-600 text-center py-4">No comments yet. Be the first to comment!</p>
                         @endforelse
                     </div>
                 </div>
@@ -169,23 +195,23 @@
                     <div class="bg-purple-50 rounded-lg p-4">
                         <div class="flex items-center gap-4 mb-3">
                             <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                {{ strtoupper(substr($foundItem->user->name ?? '?', 0, 1)) }}
+                                {{ strtoupper(substr($foundItem->founder_name ?? '?', 0, 1)) }} {{-- Menggunakan founder_name --}}
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-800 text-lg">{{ $foundItem->user->name ?? 'User Tidak Ditemukan' }}</h3>
+                                <h3 class="font-semibold text-gray-800 text-lg">{{ $foundItem->founder_name ?? 'User Tidak Ditemukan' }}</h3> {{-- Menggunakan founder_name --}}
                                 <p class="text-gray-600">Item Finder</p>
                             </div>
                         </div>
 
                         <div class="border-t border-purple-200 pt-3">
                             <p class="text-sm text-gray-600 mb-2">Contact Information:</p>
-                            <p class="font-medium text-purple-700">{{ $foundItem->founder_contact ?? 'N/A' }}</p>
+                            <p class="font-medium text-purple-700">{{ $foundItem->founder_contact ?? 'N/A' }}</p> {{-- Menggunakan founder_contact --}}
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 pt-4">
-                    <button onclick="showContact('{{ $foundItem->founder_contact ?? 'Nomor tidak tersedia' }}')"
+                    <button onclick="showContact('{{ $foundItem->founder_contact ?? 'Nomor tidak tersedia' }}')" {{-- Menggunakan founder_contact --}}
                             class="flex-1 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
@@ -193,7 +219,7 @@
                         Contact Finder
                     </button>
 
-                    <button onclick="copyContactInfo('{{ $foundItem->founder_contact ?? 'Nomor tidak tersedia' }}')"
+                    <button onclick="copyContactInfo('{{ $foundItem->founder_contact ?? 'Nomor tidak tersedia' }}')" {{-- Menggunakan founder_contact --}}
                             class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
@@ -216,21 +242,39 @@
                         </div>
                     </div>
                 </div>
-                @if(Auth::check() && Auth::user()->id === $foundItem->founderid)
-                <div>
-                    <a href="{{ route('return.create', $foundItem->id) }}"
-                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                        </svg>
-                        Make Return Report 
-                    </a>
+
+                @if(Auth::check() && (Auth::user()->id === $foundItem->founderid || (Auth::user()->user_type ?? '') === 'admin'))
+                <div class="border-t border-gray-200 pt-6">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-6 h-6 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-red-800 mb-2">Delete This Found Item</h4>
+                                <p class="text-red-700 text-sm mb-4">
+                                    Once deleted, this found item report will be permanently removed and cannot be recovered.
+                                </p>
+                                <form action="{{ route('found.destroy', $foundItem->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this found item? This action cannot be undone.');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        Delete Found Item
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @endif
             </div>
         </div>
 
-    </div>
+    </div> {{-- Penutup div Item Detail Card --}}
 
     <div id="contactModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl">
@@ -250,7 +294,7 @@
             </div>
 
             <div class="flex gap-3">
-                <button onclick="copyContactInfo('{{ $foundItem->user->phone_number ?? 'Nomor tidak tersedia' }}')"
+                <button onclick="copyContactInfo('{{ $foundItem->founder_contact ?? 'Nomor tidak tersedia' }}')"
                         class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300">
                     Copy
                 </button>
