@@ -18,29 +18,16 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white ">
             <div class="flex items-center space-x-4 flex justify-between items-center">
                 <div>
                     <div class="flex items-center gap-3">
                         <h1 class="text-3xl font-bold mb-2">{{ $foundItem->itemname }}</h1>
-                        @if(Auth::check() && (Auth::user()->id === $foundItem->founderid || (Auth::user()->user_type ?? '') === 'admin'))
-                            <div class="flex items-center gap-2">
-                                <button onclick="location.href='{{ route('found.edit', $foundItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
-                                </button>
-                                
-                                <form action="{{ route('found.destroy', $foundItem->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this found item? This action cannot be undone.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="text-red-200 hover:text-red-100 focus:outline-none transition-colors duration-200"
-                                            title="Delete Found Item">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
+                        @if(Auth::check() && Auth::user()->id === $foundItem->founderid || Auth::check() && Auth::user()->role === 'admin')
+                            <button onclick="location.href='{{ route('found.edit', $foundItem->id) }}'" class="text-blue-100 hover:text-green-300 focus:outline-none">
+
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><g id="Complete"><g id="edit"><g><path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></g></g></g></svg>
+                            </button>
                         @endif
                     </div>
 
@@ -243,32 +230,13 @@
                     </div>
                 </div>
 
-                @if(Auth::check() && (Auth::user()->id === $foundItem->founderid || (Auth::user()->user_type ?? '') === 'admin'))
-                <div class="border-t border-gray-200 pt-6">
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-                        <div class="flex items-start gap-3">
-                            <svg class="w-6 h-6 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                            </svg>
-                            <div class="flex-1">
-                                <h4 class="font-medium text-red-800 mb-2">Delete This Found Item</h4>
-                                <p class="text-red-700 text-sm mb-4">
-                                    Once deleted, this found item report will be permanently removed and cannot be recovered.
-                                </p>
-                                <form action="{{ route('found.destroy', $foundItem->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this found item? This action cannot be undone.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                        Delete Found Item
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                @if(Auth::check() && Auth::user()->id === $foundItem->founderid)
+                <div>
+                    <a href="{{ route('return.create', $foundItem->id) }}"
+                            class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center gap-2">
+                        <svg fill="#FFFFFF" width="32px" height="32px" viewBox="0 0 32 32" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer1"><path d="M27,3c-0,-0.552 -0.448,-1 -1,-1l-20,0c-0.552,0 -1,0.448 -1,1l-0,26c0,0.552 0.448,1 1,1l20,0c0.552,0 1,-0.448 1,-1l-0,-26Zm-2,1l-0,24c-0,0 -18,0 -18,0c-0,-0 -0,-24 -0,-24l18,0Zm-9,10c-3.311,0 -6,2.689 -6,6c-0,3.311 2.689,6 6,6c3.311,0 6,-2.689 6,-6c-0,-3.311 -2.689,-6 -6,-6Zm-1,2.126c-1.724,0.445 -3,2.012 -3,3.874c-0,2.208 1.792,4 4,4c1.862,0 3.429,-1.276 3.874,-3l-3.874,0c-0.552,0 -1,-0.448 -1,-1l0,-3.874Zm-2,-4.126l6,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-6,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Zm-2,-4l10,0c0.552,0 1,-0.448 1,-1c0,-0.552 -0.448,-1 -1,-1l-10,0c-0.552,0 -1,0.448 -1,1c0,0.552 0.448,1 1,1Z"/></g></svg>
+                        Make Return Report 
+                    </a>
                 </div>
                 @endif
             </div>
