@@ -21,11 +21,6 @@ Route::post('/signin',[AuthController::class, 'signin'])->name('signin');
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/returnReport', [ReturnReportApiController::class, 'index']);
     Route::get('/founditems', [FoundItemApiController::class, 'indexApi']);
+    Route::get('/lostitems', [LostApiController::class, 'indexApi']);
+    Route::get('/comment', [CommentApiController::class, 'indexApi']);
 });
-
-
-
-Route::get('/lostitems', [LostApiController::class, 'indexApi']);
-
-Route::get('/comment', [CommentApiController::class, 'indexApi']);
-
